@@ -12,7 +12,7 @@
 <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1"/>
 </head>
 <body>
-<button id="logTest" value="log"></button>
+<button id="logTest">Log Generator</button>
 <script>
   var seed = 0;
   document.getElementById('logTest').onclick = function(e){
@@ -39,7 +39,8 @@
 </script>
 <script>
 var log = (function(){  
-  var init, doc = document, getId;
+  var init, doc = document, getId, rgTag;
+  rgTag = /[<]/g;
   getId = (function(){
     var cached = {};
     return function(id){
@@ -62,15 +63,23 @@ var log = (function(){
     getId('bsConsoleTab').onclick = function(e){
       getId('bsConsole').style.display = 'none';
     };
-    
+    getId('bsConsoleTabConsole').onclick = function(e){
+      getId('bsConsoleViewConsole').style.display = 'block';
+      getId('bsConsoleViewElement').style.display = 'none';
+    };
+    getId('bsConsoleTabElement').onclick = function(e){
+      getId('bsConsoleViewConsole').style.display = 'none';
+      getId('bsConsoleViewElement').style.display = 'block';
+      getId('bsConsoleViewElement').innerHTML = '<pre>' + 
+        ('<html>' + doc.getElementsByTagName('html')[0].innerHTML + '\n</html>').replace(rgTag, '&lt;') +
+        '</pre>';
+    };
   }
   return function(v){
     init();
     getId('bsConsoleViewConsole').innerHTML += v + '<br>';
   };
 })();
-
-log('test');
 </script>
 </body>
 </html>
