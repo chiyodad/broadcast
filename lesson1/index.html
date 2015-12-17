@@ -12,6 +12,22 @@
 <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1"/>
 </head>
 <body>
-test
+<style>
+#bsConsole{position:fixed;z-index:9999999;background:#eee;bottom:0;left:0;right:0;height:200px}
+#bsConsoleTab{height:20px;background:#666}
+#bsConsoleTabConsole, #bsConsoleTabElement{font-size:11px;line-height:20px;padding:0 5px;float:left;color:#fff;font-weight:bold}
+#bsConsoleViewConsole, #bsConsoleViewElement{overflow-y:scroll;font-size:10px;height:180px}
+#bsConsoleViewElement{display:none}
+</style>
+<div id="bsConsole">
+  <div id="bsConsoleTab">
+    <div id="bsConsoleTabConsole">Console</div>
+    <div id="bsConsoleTabElement">Element</div>
+  </div>
+  <div id="bsConsoleViewConsole"></div>
+  <div id="bsConsoleViewElement"></div>
+</div>
+
+
 </body>
 </html>
