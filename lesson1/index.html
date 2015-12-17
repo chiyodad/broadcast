@@ -42,7 +42,9 @@ var log = (function(){
       return;
     }
     div = doc.createElement('div');
+    console.log(getId('bsConsoleBase'), getId('bsConsoleBase').text);
     div.innerHTML = getId('bsConsoleBase').text;
+    console.log(div.children[0], div.children[1]);
     doc.body.appendChild(div.children[0]);
     doc.body.appendChild(div.children[1]);
     //listener...
