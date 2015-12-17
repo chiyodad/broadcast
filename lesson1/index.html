@@ -32,9 +32,14 @@
 <script>
 var log = (function(){  
   var init, doc = document, getId;
-  getId = function(id){
-    return doc.getElementById(id);
-  };
+  getId = (function(){
+    var cached = {};
+    return function(id){
+      var v;
+      if(v = cached[id]) return v;
+      if(v = doc.getElementById(id)) return cached[id] = v;
+    };
+  })();
   init = function(){
     var div;
     if(getId('bsConsole')){
@@ -42,12 +47,13 @@ var log = (function(){
       return;
     }
     div = doc.createElement('div');
-    console.log(getId('bsConsoleBase'), getId('bsConsoleBase').text);
     div.innerHTML = getId('bsConsoleBase').text;
-    console.log(div.children[0], div.children[1]);
     doc.body.appendChild(div.children[0]);
     doc.body.appendChild(div.children[0]);
     //listener...
+    getId('bsConsoleTab').onclick = function(e){
+      getId('bsConsole').style.display = 'none';
+    };
     
   }
   return function(v){
