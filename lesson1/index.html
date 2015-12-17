@@ -29,6 +29,30 @@
   <div id="bsConsoleViewElement"></div>
 </div>
 </script>
-
+<script>
+var log = (function(){  
+  var init, doc = document, getId;
+  getId = function(id){
+    return doc.getElementById(id);
+  };
+  init = function(){
+    var div;
+    if(getId('bsConsole')){
+      getId('bsConsole').style.display = 'block';
+      return;
+    }
+    div = doc.createElement('div');
+    div.innerHTML = getId('bsConsoleBase').text;
+    doc.body.appendChild(div.children[0]);
+    doc.body.appendChild(div.children[1]);
+    //listener...
+    
+  }
+  return function(v){
+    init();
+    getId('bsConsoleViewConsole').innerHTML += v + '<br>';
+  };
+})();
+</script>
 </body>
 </html>
