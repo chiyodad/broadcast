@@ -24,7 +24,10 @@
 <style>
 #bsConsole{position:fixed;z-index:9999999;background:#eee;bottom:0;left:0;right:0;height:200px}
 #bsConsoleTab{height:20px;background:#666}
-#bsConsoleTabConsole, #bsConsoleTabElement{background:#888;font-size:11px;line-height:20px;padding:0 5px;float:left;color:#fff;font-weight:bold}
+#bsConsoleTabConsole, #bsConsoleTabElement{
+  background:#888;font-size:11px;line-height:20px;padding:0 5px;margin:0 5px;
+  float:left;color:#fff;font-weight:bold
+}
 #bsConsoleViewConsole, #bsConsoleViewElement{overflow-y:scroll;font-size:10px;height:180px}
 #bsConsoleViewElement{display:none}
 </style>
@@ -60,21 +63,21 @@ var log = (function(){
     doc.body.appendChild(div.children[0]);
     doc.body.appendChild(div.children[0]);
     //listener...
-    getId('bsConsoleTab').onclick = function(e){
+    getId('bsConsoleTab').addEventListener('click', function(e){
       getId('bsConsole').style.display = 'none';
-    };
-    getId('bsConsoleTabConsole').onclick = function(e){
+    });
+    getId('bsConsoleTabConsole').addEventListener('click', function(e){
       getId('bsConsoleViewConsole').style.display = 'block';
       getId('bsConsoleViewElement').style.display = 'none';
-    };
-    getId('bsConsoleTabElement').onclick = function(e){
+    });
+    getId('bsConsoleTabElement').addEventListener('click', function(e){
       getId('bsConsoleViewConsole').style.display = 'none';
       getId('bsConsoleViewElement').style.display = 'block';
       getId('bsConsoleViewElement').innerHTML = '<pre>' + 
         ('<html>' + doc.getElementsByTagName('html')[0].innerHTML + '\n</html>').replace(rgTag, '&lt;') +
         '</pre>';
-    };
-  }
+    });
+  };
   return function(v){
     init();
     getId('bsConsoleViewConsole').innerHTML += v + '<br>';
