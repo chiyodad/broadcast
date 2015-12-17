@@ -17,7 +17,7 @@
   var seed = 0;
   document.getElementById('logTest').onclick = function(e){
     seed++;
-    log('test' + seed);
+    log('test' + seed, 'a', 'b', 1, 2, 3);
   };
 </script>
 <script type="text/xxx" id="bsConsoleBase">
@@ -30,6 +30,9 @@
 }
 #bsConsoleViewConsole, #bsConsoleViewElement{overflow-y:scroll;font-size:10px;height:180px}
 #bsConsoleViewElement{display:none}
+.bsConsoleItem{
+  padding:0 3px;margin:3px;float:left;color:#000;border:1px solid #aaa
+}
 </style>
 <div id="bsConsole">
   <div id="bsConsoleTab">
@@ -42,7 +45,7 @@
 </script>
 <script>
 var log = (function(){  
-  var init, doc = document, getId, rgTag;
+  var init, doc = document, getId, rgTag, logColor;
   rgTag = /[<]/g;
   getId = (function(){
     var cached = {};
@@ -69,6 +72,7 @@ var log = (function(){
     getId('bsConsoleTabConsole').addEventListener('click', function(e){
       getId('bsConsoleViewConsole').style.display = 'block';
       getId('bsConsoleViewElement').style.display = 'none';
+      e.stopPropagation();
     });
     getId('bsConsoleTabElement').addEventListener('click', function(e){
       getId('bsConsoleViewConsole').style.display = 'none';
@@ -76,11 +80,21 @@ var log = (function(){
       getId('bsConsoleViewElement').innerHTML = '<pre>' + 
         ('<html>' + doc.getElementsByTagName('html')[0].innerHTML + '\n</html>').replace(rgTag, '&lt;') +
         '</pre>';
+      e.stopPropagation();
     });
   };
-  return function(v){
+  logColor = '#ccc';
+  return function(){
+    var a = arguments, i = 0, j = a.length, div, log;
     init();
-    getId('bsConsoleViewConsole').innerHTML += v + '<br>';
+    div = doc.createElement('div');
+    div.style.backgroundColor = logColor == '#ccc' ? '#fff' : '#ccc';
+    log = '';
+    while(i < j){
+      log += '<pre class="bsConsoleItem">' + a[i++] + '</pre>';
+    }
+    div.innerHTML = log;
+    getId('bsConsoleViewConsole').appendChild(div);
   };
 })();
 </script>
