@@ -12,6 +12,14 @@
 <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1"/>
 </head>
 <body>
+<button id="logTest" value="log"></button>
+<script>
+  var seed = 0;
+  document.getElementById('logTest').onclick = function(e){
+    seed++;
+    log('test' + seed);
+  };
+</script>
 <script type="text/xxx" id="bsConsoleBase">
 <style>
 #bsConsole{position:fixed;z-index:9999999;background:#eee;bottom:0;left:0;right:0;height:200px}
