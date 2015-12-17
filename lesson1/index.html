@@ -45,7 +45,7 @@
 </script>
 <script>
 var log = (function(){  
-  var init, doc = document, getId, rgTag, logColor;
+  var init, doc = document, getId, rgTag, logColor, consoleTab;
   rgTag = /[<]/g;
   getId = (function(){
     var cached = {};
@@ -69,9 +69,10 @@ var log = (function(){
     getId('bsConsoleTab').addEventListener('click', function(e){
       getId('bsConsole').style.display = 'none';
     });
-    getId('bsConsoleTabConsole').addEventListener('click', function(e){
+    getId('bsConsoleTabConsole').addEventListener('click', consoleTab = function(e){
       getId('bsConsoleViewConsole').style.display = 'block';
       getId('bsConsoleViewElement').style.display = 'none';
+      getId('bsConsoleViewConsole').scrollTop = -9999999999;
       e.stopPropagation();
     });
     getId('bsConsoleTabElement').addEventListener('click', function(e){
@@ -88,6 +89,7 @@ var log = (function(){
     var a = arguments, i = 0, j = a.length, div, log;
     init();
     div = doc.createElement('div');
+    div.style.clear = 'both';
     div.style.backgroundColor = logColor == '#ccc' ? '#fff' : '#ccc';
     log = '';
     while(i < j){
@@ -95,6 +97,7 @@ var log = (function(){
     }
     div.innerHTML = log;
     getId('bsConsoleViewConsole').appendChild(div);
+    consoleTab();
   };
 })();
 </script>
