@@ -17,7 +17,7 @@
   var seed = 0;
   document.getElementById('logTest').onclick = function(e){
     seed++;
-    log('test' + seed, 'a', 'b', 1, 2, 3);
+    log('test' + seed, 'a', 'b', [1,2,3], {a:3, b:5}, 1, 2, 3);
   };
 </script>
 <script type="text/xxx" id="bsConsoleBase">
@@ -86,14 +86,15 @@ var log = (function(){
   };
   logColor = '#ccc';
   return function(){
-    var a = arguments, i = 0, j = a.length, div, log;
+    var a = arguments, i = 0, j = a.length, div, log, v;
     init();
     div = doc.createElement('div');
     div.style.clear = 'both';
     div.style.backgroundColor = logColor = logColor == '#ccc' ? '#fff' : '#ccc';
     log = '';
     while(i < j){
-      log += '<pre class="bsConsoleItem">' + a[i++] + '</pre>';
+      v = a[i++];
+      log += '<pre class="bsConsoleItem">' + (v && typeof v == 'object' ? JSON.stringify(v) : v + '')  + '</pre>';
     }
     div.innerHTML = log;
     getId('bsConsoleViewConsole').appendChild(div);
