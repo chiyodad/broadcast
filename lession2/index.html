@@ -37,7 +37,14 @@ Box.prototype.stroke = function(context, r,g,b,a){
 };
 Box.prototype.fill = function(context, r,g,b,a){
   context.fillStyle = 'rgba(' + [r,g,b,a].join(',') + ')';
-  context.fill(this.x, this.y, this.width, this.height);
+  context.beginPath();
+  context.moveTo(this.x, this.y);
+  context.lineTo(this.x + this.width, this.y);
+  context.lineTo(this.x + this.width, this.y + this.height);
+  context.lineTo(this.x, this.y + this.height);
+  context.lineTo(this.x, this.y); 
+  context.closePath();
+  context.fill();
 };
 
 var box1 = new Box(100,100, 20,20);
