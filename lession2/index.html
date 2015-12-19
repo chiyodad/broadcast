@@ -29,19 +29,20 @@ var Display = function(){};
 Display.prototype._path = function(){
   throw '_path';
 };
-Display.prototype._command = [];
-Display.prototype.makePath = function(context){
-  var cmd, i, j;
-  cmd = this._command;
-  cmd.length = 0;
-  this._path(cmd);
-  i = 0, j = cmd.length;
-  context.beginPath();
-  while(i < j){
-    context[cmd[i++]](cmd[i++], cmd[i++]);
-  }
-  context.closePath();
-};
+Display.prototype.makePath = (function(){
+  var cmd = [];
+  return function(context){
+    var i, j;
+    cmd.length = 0;
+    this._path(cmd);
+    i = 0, j = cmd.length;
+    context.beginPath();
+    while(i < j){
+      context[cmd[i++]].apply(context, cmd[i++]);
+    }
+    context.closePath();
+  };
+})();
 Display.prototype.stroke = function(context, r,g,b,a){
   this.makePath();
   context.strokeStyle = 'rgba(' + [r,g,b,a].join(',') + ')';
@@ -58,18 +59,45 @@ var Box = function(x, y, w, h){
   this.width = w;
   this.height = h;
 };
+Box.prototype = new Display();
 Box.prototype._path = function(command){
   command.push(
-    'moveTo', this.x, this.y,
-    'lineTo', this.x + this.width, this.y,
-    'lineTo', this.x + this.width, this.y + this.height,
-    'lineTo', this.x, this.y + this.height,
-    'lineTo', this.x, this.y
+    'moveTo', [this.x, this.y],
+    'lineTo', [this.x + this.width, this.y],
+    'lineTo', [this.x + this.width, this.y + this.height],
+    'lineTo', [this.x, this.y + this.height],
+    'lineTo', [this.x, this.y]
   );
   return command;
-}
-
-
+};
+var Triangle = function(x, y, w, h){
+  this.x = x;
+  this.y = y;
+  this.width = w;
+  this.height = h;
+};
+Triangle.prototype = new Display();
+Triangle.prototype._path = function(command){
+  command.push(
+    'moveTo', [this.x, this.y + this.height],
+    'lineTo', [this.x + this.width/2, this.y],
+    'lineTo', [this.x + this.width, this.y + this.height],
+    'lineTo', [this.x, this.y + this.height]
+  );
+  return command;
+};
+var Circle = function(x, y, r){
+  this.x = x;
+  this.y = y;
+  this.radius = r;
+};
+Circle.prototype = new Display();
+Circle.prototype._path = function(command){
+  command.push(
+    'arc', [this.x, this.y, this.radius, 0, 2 * Math.PI]
+  );
+  return command;
+};
 var box1 = new Box(100,100, 20,20);
 var box2 = new Box(300,300, 50,50);
 
