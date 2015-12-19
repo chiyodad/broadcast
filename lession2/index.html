@@ -23,27 +23,39 @@ getId = (function(){
   };
 })();
 var context = getId('stage').getContext('2d');
-//context.strokeStyle = 'rgb(255,0,0)';
-//context.fillStyle = 'rgb(255,255,0)';
+
+var makePath = function(context, command){
+  //command = [move, x, y, lineTo, x, y, lineTo, x, y]
+  var i = 0, j = command.length;
+  context.beginPath();
+  while(i < j){
+    context[command[i++]](command[i++], command[i++]);
+  }
+  context.closePath();
+}
 var Box = function(x, y, w, h){
   this.x = x;
   this.y = y;
   this.width = w;
   this.height = h;
 };
+Box.prototype._path = function(){
+  makePath(context, [
+    'moveTo', this.x, this.y,
+    'lineTo', this.x + this.width, this.y,
+    'lineTo', this.x + this.width, this.y + this.height,
+    'lineTo', this.x, this.y + this.height,
+    'lineTo', this.x, this.y
+  ]);
+}
 Box.prototype.stroke = function(context, r,g,b,a){
+  this._path();
   context.strokeStyle = 'rgba(' + [r,g,b,a].join(',') + ')';
-  context.stroke(this.x, this.y, this.width, this.height);
+  context.stroke();
 };
 Box.prototype.fill = function(context, r,g,b,a){
+  this._path();
   context.fillStyle = 'rgba(' + [r,g,b,a].join(',') + ')';
-  context.beginPath();
-  context.moveTo(this.x, this.y);
-  context.lineTo(this.x + this.width, this.y);
-  context.lineTo(this.x + this.width, this.y + this.height);
-  context.lineTo(this.x, this.y + this.height);
-  context.lineTo(this.x, this.y); 
-  context.closePath();
   context.fill();
 };
 
