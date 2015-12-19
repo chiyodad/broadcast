@@ -7,51 +7,46 @@ var Display = (function(){
   };
   Display.prototype.makePath = (function(){
     var cmd = [];
-    return function(context){
+    return function(){
       var i, j;
       cmd.length = 0;
       this._path(cmd);
       i = 0, j = cmd.length;
-      que.push(context, 'beginPath', null);
+      que.push('beginPath', null);
       while(i < j){
-        que.push(context, cmd[i++], cmd[i++]);
+        que.push(cmd[i++], cmd[i++]);
       }
-      que.push(context, 'closePath', null);
+      que.push('closePath', null);
     };
   })();
-  Display.prototype.stroke = function(context, r,g,b,a){
-    this.makePath(context);
+  Display.prototype.stroke = function(r,g,b,a){
+    this.makePath();
     que.push(
-      context, 'strokeStyle', 'rgba(' + [r,g,b,a].join(',') + ')',
-      context, 'stroke', null
+      'strokeStyle', 'rgba(' + [r,g,b,a].join(',') + ')',
+      'stroke', null
     );
   };
-  Display.prototype.fill = function(context, r,g,b,a){
-    this.makePath(context);
+  Display.prototype.fill = function(r,g,b,a){
+    this.makePath();
     que.push(
-      context, 'fillStyle', 'rgba(' + [r,g,b,a].join(',') + ')',
-      context, 'fill', null
+      'fillStyle', 'rgba(' + [r,g,b,a].join(',') + ')',
+      'fill', null
     );
   };
-  Display.render = function(){
-    //[context1, method, arguments, context2, method, arguments,...]
-    var clearList = [], canvas, context, prop, param, i, j;
-    //clear each canvas
-    for(i = 0, j = que.length; i < j; i += 3){
-      if(clearList.indexOf(que[i]) == -1){
-        clearList.push(que[i]);
-        canvas = que[i].canvas;
-        que[i].clearRect(0, 0, canvas.width, canvas.height);
+  Display.context = null;
+  Display.render = function(){//[method, arguments, method, arguments,...]
+    var canvas, context, prop, param, i, j;
+    context = Display.context;
+    if(context){
+      canvas = context.canvas;
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      i = 0, j = que.length;
+      while(i < j){
+        prop = que[i++];
+        param = que[i++];
+        if(typeof context[prop] == 'function') context[prop].apply(context, param);
+        else context[prop] = param;
       }
-    }
-    //render object
-    i = 0, j = que.length;
-    while(i < j){
-      context = que[i++];
-      prop = que[i++];
-      param = que[i++];
-      if(typeof context[prop] == 'function') context[prop].apply(context, param);
-      else context[prop] = param;
     }
     que.length = 0;
   };
