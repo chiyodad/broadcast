@@ -21,7 +21,7 @@ getId = (function(){
     var el;
     return cache[id] || (el = document.getElementById(id)) && (cache[id] = el);
   };
-})
+})();
 var context = getId('stage').getContext('2d');
 //context.strokeStyle = 'rgb(255,0,0)';
 //context.fillStyle = 'rgb(255,255,0)';
