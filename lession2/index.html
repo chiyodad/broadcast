@@ -25,10 +25,8 @@ getId = (function(){
 })();
 var context = getId('stage').getContext('2d');
 
-
-var box1 = new Box(100,100, 20,20);
-var box2 = new Box(300,300, 50,50);
-
+var box1 = new Display.Box(100,100, 20,20);
+var box2 = new Display.Box(300,300, 50,50);
 //---------------------
 requestAnimationFrame(function loop(t){
   var x, y;
