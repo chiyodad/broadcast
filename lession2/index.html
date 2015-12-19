@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<title>bsidesoft broadcast lession 1</title>
+<title>bsidesoft broadcast lession 2</title>
 <meta charset="utf-8"/>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -12,9 +12,38 @@
 <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1"/>
 </head>
 <body>
-
+<canvas id="stage" width="500" height="500"></canvas>
 <script>
+var getId;
+getId = (function(){
+  var cache = {};
+  return function(id){
+    var el;
+    return cache[id] || (el = document.getElementById(id)) && (cache[id] = el);
+  };
+})
+var context = getId('stage').getContext('2d');
+//context.strokeStyle = 'rgb(255,0,0)';
+//context.fillStyle = 'rgb(255,255,0)';
+var Box = function(x, y, w, h){
+  this.x = x;
+  this.y = y;
+  this.width = w;
+  this.height = h;
+};
+Box.prototype.stroke = function(context, r,g,b,a){
+  context.strokeStyle = 'rgba(' + [r,g,b,a].join(',') + ')';
+  context.stroke(this.x, this.y, this.width, this.height);
+};
+Box.prototype.fill = function(context, r,g,b,a){
+  context.fillStyle = 'rgba(' + [r,g,b,a].join(',') + ')';
+  context.fill(this.x, this.y, this.width, this.height);
+};
 
+var box1 = new Box(100,100, 20,20);
+var box2 = new Box(300,300, 50,50);
+box1.fill(context, 255,0,0,1);
+box2.stroke(context, 0,0,255,1);
 </script>
 </body>
 </html>
