@@ -23,19 +23,21 @@ getId = (function(){
     return cache[id] || (el = document.getElementById(id)) && (cache[id] = el);
   };
 })();
-var context = getId('stage').getContext('2d');
+Display.context = getId('stage').getContext('2d');
 
 var box1 = new Display.Box(100,100, 20,20);
 var box2 = new Display.Box(300,300, 50,50);
 //---------------------
 requestAnimationFrame(function loop(t){
-  var x, y;
   box1.x = Math.random()*400 + 50;
   box1.y = Math.random()*400 + 50;
-  box1.fill(context, 255,0,0,1);
+  box1.width = box1.height = Math.random()*150 + 50;
+  box1.fill(255,0,0,1);
   box2.x = Math.random()*400 + 50;
   box2.y = Math.random()*400 + 50;
-  box2.stroke(context, 0,0,255,1);
+  box2.width = box2.height = Math.random()*200 + 50;
+  box2.stroke(0,0,255,1);
+  
   Display.render();
   requestAnimationFrame(loop);
 });
