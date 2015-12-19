@@ -24,45 +24,63 @@ getId = (function(){
 })();
 var context = getId('stage').getContext('2d');
 
-var makePath = function(context, command){
-  //command = [move, x, y, lineTo, x, y, lineTo, x, y]
-  var i = 0, j = command.length;
+var Display = function(){};
+//override
+Display.prototype._path = function(){
+  throw '_path';
+};
+Display.prototype._command = [];
+Display.prototype.makePath = function(context){
+  var cmd, i, j;
+  cmd = this._command;
+  cmd.length = 0;
+  this._path(cmd);
+  i = 0, j = cmd.length;
   context.beginPath();
   while(i < j){
-    context[command[i++]](command[i++], command[i++]);
+    context[cmd[i++]](cmd[i++], cmd[i++]);
   }
   context.closePath();
-}
+};
+Display.prototype.stroke = function(context, r,g,b,a){
+  this.makePath();
+  context.strokeStyle = 'rgba(' + [r,g,b,a].join(',') + ')';
+  context.stroke();
+};
+Display.prototype.fill = function(context, r,g,b,a){
+  this.makePath();
+  context.fillStyle = 'rgba(' + [r,g,b,a].join(',') + ')';
+  context.fill();
+};
 var Box = function(x, y, w, h){
   this.x = x;
   this.y = y;
   this.width = w;
   this.height = h;
 };
-Box.prototype._path = function(){
-  makePath(context, [
+Box.prototype._path = function(command){
+  command.push(
     'moveTo', this.x, this.y,
     'lineTo', this.x + this.width, this.y,
     'lineTo', this.x + this.width, this.y + this.height,
     'lineTo', this.x, this.y + this.height,
     'lineTo', this.x, this.y
-  ]);
+  );
+  return command;
 }
-Box.prototype.stroke = function(context, r,g,b,a){
-  this._path();
-  context.strokeStyle = 'rgba(' + [r,g,b,a].join(',') + ')';
-  context.stroke();
-};
-Box.prototype.fill = function(context, r,g,b,a){
-  this._path();
-  context.fillStyle = 'rgba(' + [r,g,b,a].join(',') + ')';
-  context.fill();
-};
+
 
 var box1 = new Box(100,100, 20,20);
 var box2 = new Box(300,300, 50,50);
+
+//---------------------
 box1.fill(context, 255,0,0,1);
 box2.stroke(context, 0,0,255,1);
+//---------------------
+box1.x = 150;
+box2.y = 150;
+box1.fill(context, 0,255,0,1);
+//---------------------
 </script>
 </body>
 </html>
