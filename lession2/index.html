@@ -48,14 +48,14 @@ var Display = (function(){
   Display.prototype.stroke = function(context, r,g,b,a){
     this.makePath(context);
     que.push(
-      context, 'strokeStyle', 'rgba(' + [r,g,b,a].join(',') + ')'
+      context, 'strokeStyle', 'rgba(' + [r,g,b,a].join(',') + ')',
       context, 'stroke', null
     );
   };
   Display.prototype.fill = function(context, r,g,b,a){
     this.makePath(context);
     que.push(
-      context, 'fillStyle', 'rgba(' + [r,g,b,a].join(',') + ')';
+      context, 'fillStyle', 'rgba(' + [r,g,b,a].join(',') + ')',
       context, 'fill', null
   };
   Display.render = function(){
